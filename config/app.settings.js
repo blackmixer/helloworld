@@ -4,12 +4,18 @@
  *
  * @param prm {Object} - в свойствах этого объекта определяем параметры работы программы
  */
-module.exports = function settings(prm = {}) {
+module.exports = function settings(prm) {
+
+  if(!prm){
+    prm = {};
+  };
+
+  var lsprefix = 'hw_';
 
   return Object.assign(prm, {
 
     // разделитель для localStorage
-    local_storage_prefix: 'hw_',
+    local_storage_prefix: lsprefix,
 
     // гостевые пользователи для демо-режима
     guests: [{
@@ -17,17 +23,16 @@ module.exports = function settings(prm = {}) {
       password: "hQI7OhIGlVeOWi8="
     }],
 
-    // если понадобится обратиться к 1С, будем использовать irest
-    irest_enabled: true,
+    // расположение couchdb для сайта (редирект настроен в nginx)
+    // если couchdb выполняется на том же сервере, что и nginx, можно указать "//localhost:5984/",
+    couch_path: "/couchdb/" + lsprefix,
 
-    // расположение rest-сервиса 1c по умолчанию
-    rest_path: '',
+    // расположение couchdb для nodejs (компиляция метаданных)
+    couch_local: "http://cou200:5984/" + lsprefix,
 
-    // расположение couchdb для сайта
-    couch_path: "/couchdb/hw_",
-
-    // расположение couchdb для nodejs
-    couch_local: "http://cou200:5984/hw_",
+    // если указать режим couch_direct здесь (не важно, true или false),
+    // будет использовано это значение, а не константа из localStorage
+    //couch_direct: true,
 
     // фильтр для репликации с CouchDB не используем
     pouch_filter: {
@@ -40,17 +45,21 @@ module.exports = function settings(prm = {}) {
     // объявляем номер демо-зоны
     zone_demo: 1,
 
-    // размер вложений
+    // если use_meta === false, не используем базу meta в рантайме
+    // см.: https://github.com/oknosoft/metadata.js/issues/255
+    use_meta: false,
+
+    // размер вложений 2Mb
     attachment_max_size: 2000000,
 
     // разрешаем сохранение пароля
     enable_save_pwd: true,
 
-    // используем геокодер
-    use_ip_geo: true,
+    // геокодер не используем
+    use_ip_geo: false,
 
-    // используем карты google
-    use_google_geo: 'AIzaSyAO-Jca5NTE5bQ7IY7BxFCl0jgW9OsJvuM',
+    // карты google не используем
+    use_google_geo: '',
 
   });
 

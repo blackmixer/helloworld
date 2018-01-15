@@ -8,8 +8,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import {FormGroup} from 'material-ui/Form';
 import DataListField from 'metadata-react/DataListField';
-import DataField from 'metadata-react/DataField';
+import FieldDateRange from 'metadata-react/DataField/FieldDateRange';
 
 export default class RepParams extends Component {
 
@@ -19,44 +20,20 @@ export default class RepParams extends Component {
     scheme: PropTypes.object,
   };
 
-  handleValueChange = () => {
-    const {_obj, scheme} = this.props;
-    scheme.date_from = _obj.period_from;
-    scheme.date_till = _obj.period_till;
-  };
-
   render() {
 
-    const {_obj, minHeight} = this.props;
+    const {_obj, scheme, minHeight} = this.props;
 
     return (
-      <div style={{height: minHeight || 356, marginTop: '16px'}}>
+      <FormGroup style={{height: minHeight || 356, margin: 8}}>
 
-        <DataField
-          _obj={_obj}
-          _fld="period_from"
-          handleValueChange={this.handleValueChange}
-        />
+        <FieldDateRange _obj={scheme} _fld="date" _meta={{synonym: 'Период'}} />
 
-        <DataField
-          _obj={_obj}
-          _fld="period_till"
-          handleValueChange={this.handleValueChange}
-        />
+        <DataListField _tabular={_obj.cashboxes} _fld="cashbox" _meta={_obj._metadata('cashboxes')} />
 
-        <DataListField
-          _tabular={_obj.cashboxes}
-          _fld="cashbox"
-          _meta={_obj._metadata('cashboxes')}
-        />
+        <DataListField _tabular={_obj.cash_flow_articles} _fld="cash_flow_article" _meta={_obj._metadata('cash_flow_articles')} />
 
-        <DataListField
-          _tabular={_obj.cash_flow_articles}
-          _fld="cash_flow_article"
-          _meta={_obj._metadata('cash_flow_articles')}
-        />
-
-      </div>
+      </FormGroup>
     );
 
   }

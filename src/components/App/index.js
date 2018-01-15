@@ -1,2 +1,3 @@
-import AppRoot from './AppView';
-export default AppRoot;
+//import AppView from './AppViewTemporaryDrawer';
+import AppView from './AppViewResponsiveDrawer';
+export default AppView;
